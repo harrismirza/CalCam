@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/cameraButton"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.matth.calcam.MainActivity">
+
+    <Button
+        android:id="@+id/CustomButton"
+        android:layout_width="130dp"
+        android:layout_height="53dp"
+        android:text="Button"
+        tools:layout_editor_absoluteX="16dp"
+        tools:layout_editor_absoluteY="451dp"
+        tools:text="Custom Item" />
+
+    <Button
+        android:id="@+id/editTargetsButton"
+        android:layout_width="130dp"
+        android:layout_height="53dp"
+        android:text="Button"
+        tools:layout_editor_absoluteX="238dp"
+        tools:layout_editor_absoluteY="451dp"
+        tools:text="Set Targets" />
+
+    <ImageButton
+        android:id="@+id/imageButton"
+        android:layout_width="104dp"
+        android:layout_height="110dp"
+        app:srcCompat="@android:drawable/ic_menu_camera"
+        tools:layout_editor_absoluteX="140dp"
+        tools:layout_editor_absoluteY="314dp" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="352dp"
+        android:layout_height="263dp"
+        android:text="TextView"
+        tools:layout_editor_absoluteX="20dp"
+        tools:layout_editor_absoluteY="35dp" />
+
+</android.support.constraint.ConstraintLayout>
