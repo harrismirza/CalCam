@@ -26,6 +26,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.hardware.Camera;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -37,6 +38,8 @@ import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
 import android.view.View;
+import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -53,6 +56,7 @@ import com.google.android.gms.vision.barcode.BarcodeDetector;
 import org.w3c.dom.Text;
 
 import java.io.IOException;
+import java.util.HashMap;
 
 /**
  * Activity for the multi-tracker app.  This app detects barcodes and displays the value with the
@@ -72,6 +76,8 @@ public final class BarcodeCaptureActivity extends AppCompatActivity implements B
     public static final String AutoFocus = "AutoFocus";
     public static final String UseFlash = "UseFlash";
     public static final String BarcodeObject = "Barcode";
+
+    public long lastSearchTime = System.currentTimeMillis();
 
     private CameraSource mCameraSource;
     private CameraSourcePreview mPreview;
@@ -439,13 +445,52 @@ public final class BarcodeCaptureActivity extends AppCompatActivity implements B
 
     public void sendBarcodeChangeIntent(final Barcode item)
     {
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                TextView lastBarcode = (TextView) findViewById(R.id.overlayText);
-                lastBarcode.setText("Last Barcode: " + item.rawValue + " (" + item.format + ")");
-            }
-        });
+        if(System.currentTimeMillis() - lastSearchTime > 1000) {
+            lastSearchTime = System.currentTimeMillis();
+            final DataAccess dataAccess = new DataAccess();
+            final HashMap<String, String> itemMap = dataAccess.getItem(Long.parseLong(item.rawValue));
+            final HashMap<String, String> user = dataAccess.getUser(1);
+
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    LinearLayout overlayLayout = (LinearLayout) findViewById(R.id.overlayLayout);
+                    Button consumeButton = (Button) findViewById(R.id.overlayButton);
+                    TextView lastBarcode = (TextView) findViewById(R.id.overlayText);
+
+                    if (itemMap.get("barcode") == null) {
+                        consumeButton.setVisibility(View.GONE);
+                        lastBarcode.setVisibility(View.VISIBLE);
+                    } else {
+
+                        consumeButton.setVisibility(View.VISIBLE);
+                        lastBarcode.setVisibility(View.VISIBLE);
+                        String barcodeString = "";
+                        barcodeString += "Calories: " + itemMap.get("calories") + "kcal (" + (int)((double)Long.parseLong(itemMap.get("calories"))/(double)Long.parseLong(user.get("calories_g"))*100) + "%)\n";
+                        barcodeString += "Fat: " + itemMap.get("fat") + "g (" + (int)((double)Long.parseLong(itemMap.get("fat"))/(double)Long.parseLong(user.get("fat_g"))*100) + "%)\n";
+                        barcodeString += "Saturates: " + itemMap.get("saturates") + "g (" + (int)((double)Long.parseLong(itemMap.get("saturates"))/(double)Long.parseLong(user.get("saturates_g"))*100) + "%)\n";
+                        barcodeString += "Carbohydrates: " + itemMap.get("carbohydrates") + "g (" + (int)((double)Long.parseLong(itemMap.get("carbohydrates"))/(double)Long.parseLong(user.get("carbohydrates_g"))*100) + "%)\n";
+                        barcodeString += "Sugar: " + itemMap.get("sugars") + "g (" + (int)((double)Long.parseLong(itemMap.get("sugars"))/(double)Long.parseLong(user.get("sugars_g"))*100) + "%)\n";
+                        barcodeString += "Protein: " + itemMap.get("protein") + "g (" + (int)((double)Long.parseLong(itemMap.get("protein"))/(double)Long.parseLong(user.get("protein_g"))*100) + "%)\n";
+                        barcodeString += "Salt: " + itemMap.get("salt") + "g (" + (int)((double)Long.parseLong(itemMap.get("salt"))/(double)Long.parseLong(user.get("salt_g"))*100) + "%)\n";
+                        lastBarcode.setText(barcodeString);
+
+                        consumeButton.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                AsyncTask.execute(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        dataAccess.consume(1, Long.parseLong(item.rawValue));
+                                    }
+                                });
+
+                            }
+                        });
+                    }
+                }
+            });
+        }
 
     }
 }
