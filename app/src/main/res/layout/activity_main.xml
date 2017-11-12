@@ -11,9 +11,12 @@
         android:id="@+id/CustomButton"
         android:layout_width="130dp"
         android:layout_height="53dp"
+        android:layout_marginStart="16dp"
         android:text="Button"
-        tools:layout_editor_absoluteX="16dp"
-        tools:layout_editor_absoluteY="451dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageButton"
+        app:layout_constraintVertical_bias="0.73"
         tools:text="Custom Item" />
 
     <Button
@@ -21,24 +24,38 @@
         android:layout_width="130dp"
         android:layout_height="53dp"
         android:text="Button"
-        tools:layout_editor_absoluteX="238dp"
-        tools:layout_editor_absoluteY="451dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.851"
+        app:layout_constraintStart_toEndOf="@+id/CustomButton"
+        app:layout_constraintTop_toBottomOf="@+id/imageButton"
+        app:layout_constraintVertical_bias="0.73"
         tools:text="Set Targets" />
 
     <ImageButton
         android:id="@+id/imageButton"
-        android:layout_width="104dp"
-        android:layout_height="110dp"
-        app:srcCompat="@android:drawable/ic_menu_camera"
-        tools:layout_editor_absoluteX="140dp"
-        tools:layout_editor_absoluteY="314dp" />
+        android:layout_width="106dp"
+        android:layout_height="109dp"
+        android:onClick="openCamera"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.803"
+        app:srcCompat="@android:drawable/ic_menu_camera" />
 
     <TextView
         android:id="@+id/textView"
         android:layout_width="352dp"
         android:layout_height="263dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginTop="8dp"
         android:text="TextView"
-        tools:layout_editor_absoluteX="20dp"
-        tools:layout_editor_absoluteY="35dp" />
+        app:layout_constraintBottom_toTopOf="@+id/imageButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.514" />
 
 </android.support.constraint.ConstraintLayout>
