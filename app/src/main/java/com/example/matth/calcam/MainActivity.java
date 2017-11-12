@@ -8,6 +8,7 @@ import android.widget.ImageButton;
 
 public class MainActivity extends AppCompatActivity {
 
+    private DataAccess daccess;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
